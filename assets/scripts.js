@@ -4,7 +4,7 @@ $("document").ready(function () {
     var recipeArray = [];
     var index = 0;
 
-    var apiKey = "b89438ed3263484c80550ee32471ab68";
+    var apiKey = "2110241b69434bc091f80a84cfc427ad";
 
     //PARAMETERS
     //The maximum number of recipes to return (between 1 and 100). Defaults to 10
@@ -78,13 +78,13 @@ $("document").ready(function () {
             console.log(response[0].image);
             console.log(response[0].title);
             console.log(response[0].id);
-            for (var i = 0; i < response[0].missedIngredients.length; i++) {
-                console.log(response[0].missedIngredients[i].name);
-                let newItem = document.createElement("li")
-                newItem.appendChild(document.createTextNode(response[0].missedIngredients[i].name));
-                document.getElementById("ingredientDisplay").appendChild(newItem);
+            // for (var i = 0; i < response[0].missedIngredients.length; i++) {
+            //     console.log(response[0].missedIngredients[i].name);
+            //     let newItem = document.createElement("li")
+            //     newItem.appendChild(document.createTextNode(response[0].missedIngredients[i].name));
+            //     document.getElementById("ingredientDisplay").appendChild(newItem);
                 
-            }
+            // }
            
 
             
@@ -118,6 +118,40 @@ $("document").ready(function () {
 
                 
             });
+
+            
+             //This will get recipe ingredients by the recipe ID
+             var recipeID = response[index].id;
+             var queryURL3 = "https://api.spoonacular.com/recipes/" + recipeID + "/ingredientWidget.json?apiKey=" + apiKey;
+ 
+             $.ajax({
+                 url: queryURL3,
+                 method: "GET"
+             }).then(function (response) {
+                 console.log(response);
+                 
+                 var ingredients = response.ingredients;
+                //  console.log(ingredients);
+ 
+                 for (var i = 0; i < ingredients.length; i++) {
+
+                    // var name = ingredients[i].name;
+                    // var amount = ingredients[i].amount.us.value;
+                    // var unit = ingredients[i].amount.us.unit;
+                    // var image = response.ingredients[i].image;
+                    // var listImg = $("<img>").attr("src", "ingredients[i].image");
+
+                     var listItem = $("<li>").text(ingredients[i].name + "-" + ingredients[i].amount.us.value + " " + ingredients[i].amount.us.unit);
+                     listItem.attr("id", "ing-item");
+                     
+                     $("#ingredientDisplay").append(listItem);
+                    //  $("#ing-item").prepend(listImg);
+
+                 }
+ 
+                 
+             });
+    
 
         });
 
@@ -246,23 +280,23 @@ $("document").ready(function () {
             parent.removeChild(parent.firstChild);
         }
       
-        var apiKey = "bfc7bebd&app_key=21bb623fe4e3afd71090437be434a117"
-        var queryURL = "https://api.edamam.com/api/food-database/v2/parser?ingr=" + ingredients + "&app_id=" + apiKey;
+        // var apiKey = "bfc7bebd&app_key=21bb623fe4e3afd71090437be434a117"
+        // var queryURL = "https://api.edamam.com/api/food-database/v2/parser?ingr=" + ingredients + "&app_id=" + apiKey;
 
 
-        $.ajax({
-            url: queryURL,
-            method: "GET"
-        }).then(function (response) {
-            console.log(response);
-            for (var i = 0; i < response.parsed.length; i++) { 
-            console.log (response.parsed[i]);
-            console.log (response.parsed[i].food.nutrients);
-            $('#nutri-info').append(`<li>${JSON.stringify(response).parsed[i].food.nutrients}</li>`);
+        // $.ajax({
+        //     url: queryURL,
+        //     method: "GET"
+        // }).then(function (response) {
+        //     console.log(response);
+        //     for (var i = 0; i < response.parsed.length; i++) { 
+        //     console.log (response.parsed[i]);
+        //     console.log (response.parsed[i].food.nutrients);
+        //     $('#nutri-info').append(`<li>${JSON.stringify(response).parsed[i].food.nutrients}</li>`);
 
-            };
-        })
-    })
+        //     };
+        // })
+    });
         //Add an onclick "Next Recipe" to +1 the index
         var index = 0;
         // document.getElementById("NextBtn").onclick = function () {
