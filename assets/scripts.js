@@ -110,11 +110,6 @@ $("document").ready(function () {
                 $("#instruct").text(response.instructions);
                 $("#time").text(response.preparationMinutes + " minutes");
 
-                for (i=0; i < ingredientsArray.length; i++) {
-                    let newItem = document.createElement("li")
-                    newItem.appendChild(document.createTextNode(ingredients[i]));
-                    document.getElementById("ingredientDisplay").appendChild(newItem);
-                }
 
                 
             });
